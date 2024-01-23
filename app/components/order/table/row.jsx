@@ -6,6 +6,7 @@ import {
   faCheck,
   faClock,
 } from "@fortawesome/free-solid-svg-icons";
+import Image from "next/image";
 
 const Row = () => {
   const data = [
@@ -69,10 +70,12 @@ const Row = () => {
             {/* Customer */}
             <div className="flex gap-2 items-center w-[25%]">
               <div className=" w-[30px] aspect-square rounded-full border-[1px] overflow-hidden">
-                <img
+                <Image
                   className="w-full h-full object-cover"
                   src={e.customer.image_url || ""}
                   href={e.customer.image_url || ""}
+                  width="30"
+                  height="30"
                 />
               </div>
               <p className="truncate">{e.customer.name}</p>

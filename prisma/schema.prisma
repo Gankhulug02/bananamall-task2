@@ -11,15 +11,16 @@ datasource db {
 }
 
 model Users {
-  id       String   @id @db.VarChar(255)
-  name     String   @db.VarChar(255)
-  email    String   @db.VarChar(255)
-  password String   @db.Text
-  Orders   Orders[]
+  id        String   @id @default(uuid())
+  name      String   @db.VarChar(255)
+  email     String   @unique @db.VarChar(255)
+  image_url String   @default("https://images.unsplash.com/photo-1519120944692-1a8d8cfc107f?q=80&w=2236&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D") @db.VarChar(255)
+  password  String   @db.Text
+  Orders    Orders[]
 }
 
 model Products {
-  id        String   @id @db.VarChar(255)
+  id        String   @id @default(uuid())
   name      String   @db.VarChar(255)
   image_url String   @db.Text
   Price     Int      @db.Int
@@ -27,13 +28,13 @@ model Products {
 }
 
 model Orders {
-  id          String   @id @db.VarChar(255)
-  Costumer    Users    @relation(fields: [Costumer_id], references: [id])
-  Costumer_id String   @db.VarChar(255)
-  Product     Products @relation(fields: [Product_id], references: [id])
-  Product_id  String   @db.VarChar(255)
+  id          String   @id @default(uuid())
+  customer    Users    @relation(fields: [customer_id], references: [id])
+  customer_id String   @db.VarChar(255)
+  product     Products @relation(fields: [product_id], references: [id])
+  product_id  String   @db.VarChar(255)
   amount      Int      @db.Int
-  Total       Int      @db.Int
+  total       Int      @db.Int
   status      Status   @default(pending)
   date        DateTime @default(now())
 }

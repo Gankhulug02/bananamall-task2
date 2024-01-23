@@ -12,11 +12,7 @@ const createUserSchema = z.object({
 export async function POST(request) {
   const body = await request.json();
 
-  console.log("body", body);
-
   const validation = createUserSchema.safeParse(body);
-
-  console.log("validation", validation);
 
   if (!validation.success)
     return NextResponse.json(validation.error.errors, { status: 400 });
@@ -31,4 +27,27 @@ export async function POST(request) {
   });
 
   return NextResponse.json(newUser, { status: 201 });
+}
+
+const getUserSchema = z.object({
+  name: z.string().min(1).max(255),
+});
+
+export async function GET(request) {
+  const body = await request.json();
+
+  console.log("asdasd");
+
+  const validation = getUserSchema.safeParse(body);
+
+  if (!validation.success)
+    return NextResponse.json(validation.error.errors, { status: 400 });
+
+  const user = await prisma.users.findUnique({
+    where: {
+      email: body.email,
+    },
+  });
+
+  return NextResponse.json(user, { status: 200 });
 }

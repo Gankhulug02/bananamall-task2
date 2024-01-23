@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { PrismaClient } from "@prisma/client";
 import { z } from "zod";
 import prisma from "@/prisma/client";
 
@@ -29,25 +30,44 @@ export async function POST(request) {
   return NextResponse.json(newUser, { status: 201 });
 }
 
-const getUserSchema = z.object({
-  name: z.string().min(1).max(255),
-});
+const prisma2 = new PrismaClient();
 
-export async function GET(request) {
-  const body = await request.json();
-
-  console.log("asdasd");
-
-  const validation = getUserSchema.safeParse(body);
-
-  if (!validation.success)
-    return NextResponse.json(validation.error.errors, { status: 400 });
-
-  const user = await prisma.users.findUnique({
+async function updateUser() {
+  const user = await prisma2.users.update({
     where: {
-      email: body.email,
+      email: "",
+    },
+    data: {
+      email: "",
+    },
+  });
+  return user;
+}
+
+async function deleteUser({ email }) {
+  const user = await prisma2.users.delete({
+    where: {
+      email: email,
     },
   });
 
-  return NextResponse.json(user, { status: 200 });
+  return user;
 }
+
+async function findUser({}) {
+  const email = "huluguu0202@gmail.com";
+  const user = await prisma.users.findUnique({
+    where: {
+      email: email,
+    },
+    select: {
+      email: true,
+      name: true,
+      image_url: true,
+    },
+  });
+  console.log(user);
+  return user;
+}
+
+export { findUser, deleteUser, updateUser };

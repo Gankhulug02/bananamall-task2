@@ -1,23 +1,46 @@
 "use client";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import OneProduct from "../components/product/product";
 import Modal from "../components/modal";
 import { ModalContext } from "../context/modelContext";
 import TopSection from "../components/product/topSection";
+import { BASE_URL } from "@/variables";
 
 const Product = () => {
-  const array = [1, 2, 3, 4];
-  const { isModal, setIsModal } = useContext(ModalContext);
+  const { isModal } = useContext(ModalContext);
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch(`${BASE_URL}/api/products`);
+        const data = await response.json();
+        setProducts(data);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+
+    fetchProducts();
+  }, []);
 
   return (
     <div className="flex flex-col items-center gap-10 min-w-[1100px] min-h-screen p-8">
       <TopSection />
       <div className="flex flex-wrap justify-center gap-6">
-        {array.map((e, index) => (
-          <div key={index}>
-            <OneProduct index={index} />
-          </div>
-        ))}
+        {products.map((e, index) => {
+          console.log(e);
+          return (
+            <div key={index}>
+              <OneProduct
+                index={index}
+                name={e.name}
+                image_url={e.image_url}
+                price={e.Price}
+              />
+            </div>
+          );
+        })}
       </div>
       {isModal === true ? <Modal /> : <></>}
     </div>

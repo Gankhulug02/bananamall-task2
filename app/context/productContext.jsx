@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import { createContext } from "react";
 import { BASE_URL } from "@/variables";
 import axios from "axios";
@@ -24,8 +24,21 @@ const ProductProvider = ({ children }) => {
       throw error;
     }
   };
+
+  const getProducts = async ({ name }) => {
+    try {
+      const response = await instance.post("/api/product", {
+        name,
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error creating product:", error);
+      throw error;
+    }
+  };
+
   return (
-    <ProductContext.Provider value={{ createProduct }}>
+    <ProductContext.Provider value={{ createProduct, getProducts }}>
       {children}
     </ProductContext.Provider>
   );

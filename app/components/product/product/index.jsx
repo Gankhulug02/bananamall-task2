@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React from "react";
 
-const OneProduct = ({ img, name, price, index }) => {
+const OneProduct = ({ image_url, name, price, index }) => {
   return (
     <div
       className="w-[250px] h-[280px] overflow-hidden rounded-md hover:shadow-[0_0px_20px_0px_rgba(100,100,100,0.75)]"
@@ -14,11 +14,11 @@ const OneProduct = ({ img, name, price, index }) => {
           height="200"
           style={{ objectFit: "cover", width: "100%", height: "100%" }}
           src={
-            img ||
+            image_url ||
             "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=2899&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
           }
           alt={
-            img ||
+            image_url ||
             "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=2899&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
           }
         />

@@ -2,9 +2,11 @@
 import { ModalContext } from "@/app/context/modelContext";
 import React, { useContext, useEffect, useState } from "react";
 import ModalContent from "./modalContent";
+import { ProductContext } from "@/app/context/productContext";
 
 const TopSection = () => {
   const { setIsModal, setContent } = useContext(ModalContext);
+  const { getProducts } = useContext(ProductContext);
   const [searchProd, setSearchProd] = useState("");
 
   const createProductFunction = async () => {
@@ -12,7 +14,12 @@ const TopSection = () => {
     setContent(<ModalContent />);
   };
 
-  useEffect(() => {}, [searchProd]);
+  useEffect(async () => {
+    console.log(searchProd);
+    if (searchProd) {
+      const products = await getProducts({ name: searchProd });
+    }
+  }, [searchProd]);
   return (
     <div className="flex justify-between w-full ">
       <input

@@ -1,17 +1,6 @@
-import { PrismaClient } from "@prisma/client";
-import { z } from "zod";
-import prisma from "@/prisma/client";
 import { NextResponse } from "next/server";
-
-const prisma2 = new PrismaClient();
-
-// model Products {
-//   id        String   @id @default(uuid())
-//   name      String   @db.VarChar(255)
-//   image_url String   @default("https://images.unsplash.com/photo-1519120944692-1a8d8cfc107f?q=80&w=2236&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D") @db.VarChar(255)
-//   Price     Int      @db.Int
-//   Orders    Orders[]
-// }
+import prisma from "@/prisma/client";
+import { z } from "zod";
 
 const createProductSchema = z.object({
   name: z.string().min(1).max(255),
@@ -35,23 +24,16 @@ export async function POST(request) {
   return NextResponse.json({ ...newProduct, status: 201 });
 }
 
-async function deleteProduct({ id }) {
-  const product = await prisma.products.delete({
-    where: {
-      id: id,
-    },
-  });
+export async function GET() {
+  try {
+    const products = await prisma.products.findMany();
 
-  return product;
+    return NextResponse.json(products);
+  } catch (error) {
+    console.error("Error retrieving products:", error);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
+  }
 }
-
-async function findProduct({ name }) {
-  const product = await prisma.products.findUnique({
-    where: {
-      name: name,
-    },
-  });
-  return product;
-}
-
-export { findProduct, deleteProduct };

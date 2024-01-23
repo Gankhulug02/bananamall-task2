@@ -73,7 +73,7 @@ const Row = () => {
                 <Image
                   className="w-full h-full object-cover"
                   src={e.customer.image_url || ""}
-                  href={e.customer.image_url || ""}
+                  alt={e.customer.image_url || ""}
                   width="30"
                   height="30"
                 />

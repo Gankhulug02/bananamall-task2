@@ -2,6 +2,9 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Login from "./components/page";
 import Navbar from "./components/navbar";
+import Modal from "./components/modal";
+import ModalProvider, { ModalContext } from "./context/modelContext";
+import ProductProvider from "./context/productContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -14,14 +17,20 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        {false ? (
-          <Login />
-        ) : (
-          <div>
-            <Navbar />
-            {children}
-          </div>
-        )}
+        <div className="relative">
+          {false ? (
+            <Login />
+          ) : (
+            <ModalProvider>
+              <ProductProvider>
+                <div>
+                  <Navbar />
+                  {children}
+                </div>
+              </ProductProvider>
+            </ModalProvider>
+          )}
+        </div>
       </body>
     </html>
   );

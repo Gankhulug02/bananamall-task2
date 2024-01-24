@@ -61,7 +61,7 @@ const Dashboard = () => {
       },
       title: {
         display: true,
-        text: "Monthly total",
+        text: "Dashboard",
       },
     },
     maintainAspectRatio: false,

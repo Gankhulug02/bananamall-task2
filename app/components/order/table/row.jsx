@@ -82,7 +82,6 @@ const Row = () => {
                   className="px-2 h-full aspect-square  rounded-md border-2"
                   onClick={() => {
                     setIsModal(true);
-                    console.log(e);
                     setContent(
                       <OrderModelContent data={{ ...e, edit: true }} />
                     );

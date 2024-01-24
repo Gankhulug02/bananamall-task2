@@ -5,10 +5,9 @@ import { ProductContext } from "@/app/context/productContext";
 import React, { useContext, useEffect, useState } from "react";
 
 const OrderModelContent = ({ data }) => {
-  const { createOrder } = useContext(OrderContext);
+  const { createOrder, editOrder } = useContext(OrderContext);
   const { products } = useContext(ProductContext);
   const { setIsModal, setIsLoader } = useContext(ModalContext);
-  const { chosenProduct, setChosenProduct } = useState({});
   const [inputData, setInputData] = useState(
     data?.edit === true
       ? { ...data }
@@ -18,10 +17,6 @@ const OrderModelContent = ({ data }) => {
   const inputHandler = ({ name, value }) => {
     setInputData({ ...inputData, [name]: value });
   };
-
-  useEffect(() => {
-    console.log(inputData);
-  }, [inputData]);
 
   return (
     <div className="flex flex-col gap-4 p-8 pt-16 w-[300px]">
@@ -97,20 +92,38 @@ const OrderModelContent = ({ data }) => {
             alert("Error");
           } else {
             setIsLoader(true);
-            const response = await createOrder({
-              data: {
-                status: inputData.status,
-                amount: inputData.amount,
-                total: inputData.total,
-                product_id: inputData.product_id,
-              },
-            });
-            setIsLoader(false);
-            setIsModal(false);
+
+            if (data?.edit === true) {
+              const response = await editOrder({
+                data: {
+                  id: data.id,
+                  status: inputData.status,
+                  amount: inputData.amount,
+                  total: inputData.total,
+                  product_id: inputData.product_id,
+                },
+              });
+
+              console.log(response);
+
+              setIsLoader(false);
+              setIsModal(false);
+            } else {
+              const response = await createOrder({
+                data: {
+                  status: inputData.status,
+                  amount: inputData.amount,
+                  total: inputData.total,
+                  product_id: inputData.product_id,
+                },
+              });
+              setIsLoader(false);
+              setIsModal(false);
+            }
           }
         }}
       >
-        Create Invoice
+        {data?.edit === true ? "Edit Invoice" : "Create Invoice"}
       </button>
     </div>
   );

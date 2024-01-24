@@ -11,7 +11,7 @@ const OrderProvider = ({ children }) => {
 
   const instance = axios.create({
     baseURL: process.env.BASE_URL,
-    timeout: 5000,
+    timeout: 50000,
   });
 
   useEffect(() => {
@@ -41,7 +41,7 @@ const OrderProvider = ({ children }) => {
 
       return response.data;
     } catch (error) {
-      console.error("Error creating product:", error);
+      console.error("Error creating order:", error);
       throw error;
     } finally {
       const orders = await getOrders();
@@ -49,25 +49,24 @@ const OrderProvider = ({ children }) => {
     }
   };
 
-  //   const editProduct = async ({ price, name, productId }) => {
-  //     try {
-  //       const response = await instance.put("/api/product", {
-  //         productId,
-  //         updatedData: {
-  //           Price: parseInt(price),
-  //           name,
-  //         },
-  //       });
+  const editOrder = async ({ data }) => {
+    try {
+      const response = await instance.put("/api/order", {
+        order_id: data.id,
+        updatedData: {
+          ...data,
+        },
+      });
 
-  //       return response.data;
-  //     } catch (error) {
-  //       console.error("Error creating product:", error);
-  //       throw error;
-  //     } finally {
-  //       const products = await getProducts({ name: "" });
-  //       setProducts(products);
-  //     }
-  //   };
+      return response;
+    } catch (error) {
+      console.error("Error creating product:", error);
+      throw error;
+    } finally {
+      const orders = await getOrders();
+      setOrders(orders);
+    }
+  };
 
   const deleteOrder = async ({ order_id }) => {
     try {
@@ -100,8 +99,9 @@ const OrderProvider = ({ children }) => {
         createOrder,
         deleteOrder,
         getOrders,
-        orders,
+        editOrder,
         setOrders,
+        orders,
       }}
     >
       {children}

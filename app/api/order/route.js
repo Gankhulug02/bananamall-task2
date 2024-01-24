@@ -22,7 +22,6 @@ export async function POST(request) {
     customer_id,
     product_id,
   };
-  console.log(body);
 
   const validation = createOrderSchema.safeParse(body);
 
@@ -34,6 +33,38 @@ export async function POST(request) {
   });
 
   return NextResponse.json({ ...newProduct, status: 201 });
+}
+
+export async function PUT(request) {
+  try {
+    const { order_id, updatedData } = await request.json();
+
+    // Validate if the ID and updated data are provided
+    if (!order_id || !updatedData) {
+      return NextResponse.json(
+        { error: "ID and updated data must be provided" },
+        { status: 400 }
+      );
+    }
+
+    // Update the order by ID
+    const updatedOrder = await prisma.orders.update({
+      where: {
+        id: order_id,
+      },
+      data: updatedData,
+    });
+
+    return NextResponse.json(updatedOrder);
+  } catch (error) {
+    console.error("Error updating Order:", error);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
+  } finally {
+    await prisma.$disconnect();
+  }
 }
 
 export async function GET() {

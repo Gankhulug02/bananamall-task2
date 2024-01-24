@@ -11,7 +11,7 @@ const ProductProvider = ({ children }) => {
 
   const instance = axios.create({
     baseURL: process.env.BASE_URL,
-    timeout: 5000,
+    timeout: 50000,
   });
 
   useEffect(() => {

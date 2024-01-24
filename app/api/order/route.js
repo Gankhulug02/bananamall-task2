@@ -41,6 +41,7 @@ export async function GET() {
     const productsWithCustomers = await prisma.orders.findMany({
       include: {
         customer: true,
+        product: true,
       },
     });
 

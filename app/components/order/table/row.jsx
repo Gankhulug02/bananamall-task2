@@ -59,7 +59,7 @@ const Row = () => {
               </div>
               {/* Date */}
               <div className="w-[10%] flex items-center ">
-                <span className="truncate">{e.date}</span>
+                <span className="truncate">{e.date.split("T")[0]}</span>
               </div>
               {/* Status */}
               <div className="w-[15%]">

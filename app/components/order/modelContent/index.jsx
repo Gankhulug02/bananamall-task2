@@ -96,7 +96,6 @@ const OrderModelContent = ({ data }) => {
                 product_id: inputData.product_id,
               },
             });
-            console.log(response);
             setIsLoader(false);
             setIsModal(false);
           }

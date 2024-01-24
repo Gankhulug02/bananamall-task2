@@ -27,7 +27,7 @@ const Row = () => {
     fetchData();
   }, []);
   return (
-    <div className="bg-white overflow-hidden rounded-lg">
+    <div className="bg-white overflow-hidden rounded-lg h-[500px] overflow-y-scroll">
       {orders
         .sort((a, b) => new Date(b.date) - new Date(a.date))
         .map((e, index) => {

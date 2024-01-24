@@ -8,10 +8,9 @@ export async function POST(request) {
     const search = body.name;
     // Validate if the search parameter is provided
     if (!search) {
-      return NextResponse.json(
-        { error: "Search parameter is required" },
-        { status: 400 }
-      );
+      const products = await prisma.products.findMany();
+
+      return NextResponse.json(products);
     }
 
     // Define Prisma filter options
@@ -33,5 +32,71 @@ export async function POST(request) {
       { error: "Internal Server Error" },
       { status: 500 }
     );
+  }
+}
+
+export async function DELETE(request) {
+  try {
+    const { productId } = await request.json();
+
+    // Validate if productId is provided
+    if (!productId) {
+      return NextResponse.json(
+        { error: "Product ID is required for deletion" },
+        { status: 400 }
+      );
+    }
+
+    // Delete product by Id
+    await prisma.products.delete({
+      where: {
+        id: productId, // Assuming productId is an integer
+      },
+    });
+
+    return NextResponse.json({
+      message: "Product deleted successfully",
+      code: 200,
+    });
+  } catch (error) {
+    console.error("Error deleting product:", error);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
+  } finally {
+    await prisma.$disconnect();
+  }
+}
+
+export async function PUT(request) {
+  try {
+    const { productId, updatedData } = await request.json();
+
+    // Validate if the ID and updated data are provided
+    if (!productId || !updatedData) {
+      return NextResponse.json(
+        { error: "ID and updated data must be provided" },
+        { status: 400 }
+      );
+    }
+
+    // Update the product by ID
+    const updatedProduct = await prisma.products.update({
+      where: {
+        id: productId,
+      },
+      data: updatedData,
+    });
+
+    return NextResponse.json(updatedProduct);
+  } catch (error) {
+    console.error("Error updating product:", error);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
+  } finally {
+    await prisma.$disconnect();
   }
 }

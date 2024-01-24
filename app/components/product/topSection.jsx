@@ -5,7 +5,8 @@ import ModalContent from "./modalContent";
 import { ProductContext } from "@/app/context/productContext";
 
 const TopSection = () => {
-  const { setIsModal, setContent } = useContext(ModalContext);
+  const { setIsModal, setContent, setIsLoader } = useContext(ModalContext);
+
   const { getProducts, setProducts } = useContext(ProductContext);
   const [searchProd, setSearchProd] = useState("");
 
@@ -16,11 +17,14 @@ const TopSection = () => {
 
   useEffect(() => {
     const fetchProducts = async () => {
+      setIsLoader(true);
       try {
         const products = await getProducts({ name: searchProd });
         setProducts(products);
       } catch (error) {
         console.error("Error fetching products:", error);
+      } finally {
+        setIsLoader(false);
       }
     };
 

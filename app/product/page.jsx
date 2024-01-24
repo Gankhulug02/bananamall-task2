@@ -6,19 +6,23 @@ import { ModalContext } from "../context/modelContext";
 import TopSection from "../components/product/topSection";
 import { BASE_URL } from "@/variables";
 import { ProductContext } from "../context/productContext";
+import Loader from "../components/loader";
 
 const Product = () => {
-  const { isModal } = useContext(ModalContext);
+  const { isModal, isLoader, setIsLoader } = useContext(ModalContext);
   const { setProducts, products } = useContext(ProductContext);
 
   useEffect(() => {
     const fetchProducts = async () => {
+      setIsLoader(true);
       try {
         const response = await fetch(`${BASE_URL}/api/products`);
         const data = await response.json();
         setProducts(data);
       } catch (error) {
         console.error("Error fetching products:", error);
+      } finally {
+        setIsLoader(false);
       }
     };
 
@@ -35,6 +39,7 @@ const Product = () => {
               <OneProduct
                 index={index}
                 name={e.name}
+                productId={e.id}
                 image_url={e.image_url}
                 price={e.Price}
               />
@@ -43,6 +48,7 @@ const Product = () => {
         })}
       </div>
       {isModal === true ? <Modal /> : <></>}
+      {isLoader === true ? <Loader /> : <></>}
     </div>
   );
 };

@@ -23,7 +23,7 @@ export default function RootLayout({ children }) {
           ) : (
             <ModalProvider>
               <ProductProvider>
-                <div>
+                <div className="min-h-screen">
                   <Navbar />
                   {children}
                 </div>

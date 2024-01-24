@@ -61,6 +61,7 @@ const ProductProvider = ({ children }) => {
         },
       });
 
+      alert("Амжилттай өөрчлөгдлөө");
       return response.data;
     } catch (error) {
       console.error("Error creating product:", error);

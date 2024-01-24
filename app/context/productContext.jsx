@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { createContext } from "react";
 import { BASE_URL } from "@/variables";
 import axios from "axios";
@@ -13,6 +13,14 @@ const ProductProvider = ({ children }) => {
     baseURL: process.env.BASE_URL,
     timeout: 5000,
   });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const product = await getProducts({ name: "" });
+      setProducts(product);
+    };
+    fetchData();
+  }, []);
 
   const getProducts = async ({ name }) => {
     try {

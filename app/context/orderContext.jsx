@@ -29,7 +29,6 @@ const OrderProvider = ({ children }) => {
       const response = await instance.post("/api/order", {
         ...data,
         customer_id: "03ab7eea-953f-4787-8ef8-c85abb72793e",
-        product_id: "06bbd4fc-26d5-49c6-a922-66942217da39",
       });
 
       return response.data;

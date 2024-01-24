@@ -10,11 +10,12 @@ import {
 import Image from "next/image";
 import { OrderContext } from "@/app/context/orderContext";
 import { ModalContext } from "@/app/context/modelContext";
+import OrderModelContent from "../modelContent";
 
 const Row = () => {
   const { orders, getOrders, setOrders, deleteOrder } =
     useContext(OrderContext);
-  const { setIsLoader } = useContext(ModalContext);
+  const { setIsLoader, setIsModal, setContent } = useContext(ModalContext);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -80,7 +81,16 @@ const Row = () => {
               </div>
               {/* Edit Delete Button */}
               <div className="w-[10%] flex justify-end items-center gap-2 ">
-                <button className="px-2 h-full aspect-square  rounded-md border-2">
+                <button
+                  className="px-2 h-full aspect-square  rounded-md border-2"
+                  onClick={() => {
+                    setIsModal(true);
+                    console.log(e);
+                    setContent(
+                      <OrderModelContent data={{ ...e, edit: true }} />
+                    );
+                  }}
+                >
                   <FontAwesomeIcon icon={faPen} />
                 </button>
                 <button

@@ -22,6 +22,7 @@ export async function POST(request) {
     customer_id,
     product_id,
   };
+  console.log(body);
 
   const validation = createOrderSchema.safeParse(body);
 
@@ -31,7 +32,6 @@ export async function POST(request) {
   const newProduct = await prisma.orders.create({
     data: body,
   });
-  console.log(newProduct);
 
   return NextResponse.json({ ...newProduct, status: 201 });
 }

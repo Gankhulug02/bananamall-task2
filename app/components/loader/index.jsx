@@ -2,7 +2,7 @@ import React from "react";
 
 const Loader = () => {
   return (
-    <div className=" absolute top-[50%] left-[50%] flex justify-center items-center">
+    <div className=" absolute top-[50vh] left-[50%] flex justify-center items-center">
       <div className="loader"></div>
     </div>
   );

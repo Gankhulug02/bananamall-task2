@@ -19,6 +19,10 @@ const OrderModelContent = ({ data }) => {
     setInputData({ ...inputData, [name]: value });
   };
 
+  useEffect(() => {
+    console.log(inputData);
+  }, [inputData]);
+
   return (
     <div className="flex flex-col gap-4 p-8 pt-16 w-[300px]">
       <div className="flex justify-between">
@@ -67,13 +71,14 @@ const OrderModelContent = ({ data }) => {
           name="product_id"
           value={inputData.product_id}
           onChange={(e) => {
-            const chosenProduct = products.map((product) => {
-              return e.target.value === product.id ? product.id : "";
-            });
-            setInputData({
-              ...inputData,
-              amount: chosenProduct.Price,
-              product_id: chosenProduct.product_id,
+            products.map((product) => {
+              if (e.target.value == product.id) {
+                setInputData({
+                  ...inputData,
+                  amount: product.Price,
+                  product_id: product.id,
+                });
+              }
             });
           }}
         >

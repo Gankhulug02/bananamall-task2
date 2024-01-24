@@ -13,19 +13,16 @@ import { ModalContext } from "@/app/context/modelContext";
 import OrderModelContent from "../modelContent";
 
 const Row = () => {
-  const { orders, getOrders, setOrders, deleteOrder } =
-    useContext(OrderContext);
+  const { orders, deleteOrder } = useContext(OrderContext);
   const { setIsLoader, setIsModal, setContent } = useContext(ModalContext);
 
   useEffect(() => {
-    const fetchData = async () => {
-      setIsLoader(true);
-      const orders = await getOrders();
-      setOrders(orders);
+    setIsLoader(true);
+    if (orders.length > 0) {
       setIsLoader(false);
-    };
-    fetchData();
-  }, []);
+    }
+  }, [orders]);
+
   return (
     <div className="bg-white overflow-hidden rounded-lg h-[500px] overflow-y-scroll">
       {orders

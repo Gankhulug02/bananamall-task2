@@ -65,22 +65,21 @@ const OrderModelContent = ({ data }) => {
         <select
           className="border-2 rounded-md p-2 w-[150px]"
           name="product_id"
-          value={inputData?.product_id}
+          value={inputData.product_id}
           onChange={(e) => {
-            const data = JSON.parse(e.target.value);
+            const chosenProduct = products.map((product) => {
+              return e.target.value === product.id ? product.id : "";
+            });
             setInputData({
               ...inputData,
-              amount: data.Price,
-              product_id: data.product_id,
+              amount: chosenProduct.Price,
+              product_id: chosenProduct.product_id,
             });
           }}
         >
           <option value="">Choose Product</option>
           {products.map((product) => (
-            <option
-              value={`{ "Price": ${product.Price}, "product_id": "${product.id}" }`}
-              key={product.id}
-            >
+            <option value={product.id} key={product.id}>
               {product.name}
             </option>
           ))}

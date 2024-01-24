@@ -11,6 +11,8 @@ import {
   Legend,
 } from "chart.js";
 import { OrderContext } from "@/app/context/orderContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck, faClock } from "@fortawesome/free-solid-svg-icons";
 
 ChartJS.register(
   CategoryScale,
@@ -23,10 +25,10 @@ ChartJS.register(
 
 const Dashboard = () => {
   const { orders } = useContext(OrderContext);
-  const [amounts, setAmounts] = useState([200, 300, 400]);
-  const [dates, setDates] = useState(["1/24/2024", "2/24/2023", "2/26/2023"]);
-
-  const transactions = orders;
+  const [amounts, setAmounts] = useState();
+  const [dates, setDates] = useState();
+  const [transactions, setTransactions] = useState(orders);
+  const [barColor, setBarColor] = useState("rgb(69 151 99)");
 
   useEffect(() => {
     // Create an object to store amounts based on date
@@ -50,9 +52,13 @@ const Dashboard = () => {
     const correspondingAmounts = uniqueDates.map((date) => amountsByDate[date]);
 
     // Update state with the extracted dates and amounts
-    setDates(uniqueDates);
-    setAmounts(correspondingAmounts);
+    setDates(uniqueDates.reverse());
+    setAmounts(correspondingAmounts.reverse());
   }, [transactions]);
+
+  useEffect(() => {
+    setTransactions(orders);
+  }, [orders]);
 
   const [chartOptions, setChartOptions] = useState({
     plugins: {
@@ -68,8 +74,48 @@ const Dashboard = () => {
     responsive: true,
   });
 
+  const filterByPaid = () => {
+    const paidOrders = orders.filter((order) => order.status === "paid");
+    setBarColor("rgb(34 197 94)");
+    setTransactions(paidOrders);
+  };
+  const filterByPending = () => {
+    const pendingOrders = orders.filter((order) => order.status === "pending");
+    setTransactions(pendingOrders);
+    setBarColor("#696969");
+  };
+
   return (
-    <div className="w-[70vw] md:col-span-2 relative lg:h-[70vh] h-[50vh] m-auto p-4 border rounded-lg bg-white">
+    <div className="flex flex-col w-full md:col-span-2 relative lg:h-[70vh] h-[50vh] m-auto p-4 border rounded-lg bg-white">
+      <div className="flex gap-4">
+        <button
+          className="flex gap-2 items-center  p-2 rounded-xl bg-green-500 text-white w-fit"
+          onClick={filterByPaid}
+        >
+          <p>Paid</p>
+          <div className="flex items-center w-3">
+            <FontAwesomeIcon icon={faCheck} />
+          </div>
+        </button>
+        <button
+          className="flex gap-2 items-center p-2 rounded-xl bg-[#e7e7e7] text-[#696969] w-fit"
+          onClick={filterByPending}
+        >
+          <p>Pending</p>
+          <div className="flex items-center w-3">
+            <FontAwesomeIcon icon={faClock} />
+          </div>
+        </button>
+        <button
+          className="flex gap-2 items-center p-2 rounded-xl bg-[#e7e7e7] text-[#696969] w-fit"
+          onClick={() => {
+            setBarColor("rgb(69 151 99)");
+            setTransactions(orders);
+          }}
+        >
+          <p>All</p>
+        </button>
+      </div>
       <Bar
         data={{
           labels: dates,
@@ -78,7 +124,7 @@ const Dashboard = () => {
               label: "Total $",
               data: amounts,
               borderColor: "rgb(53, 162, 235)",
-              backgroundColor: "rgb(53, 162, 235, 0.4)",
+              backgroundColor: barColor,
             },
           ],
         }}

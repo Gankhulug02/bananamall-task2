@@ -41,28 +41,7 @@ const ModalContent = ({ data }) => {
           />
         </div>
         {/* create button */}
-        {data?.edit === false ? (
-          <button
-            className="bg-primary-light text-white p-2 rounded-lg"
-            onClick={async () => {
-              if (!name || !price) {
-                alert("Тайлбар болон үнэ заавал оруулна уу!!!");
-              } else {
-                setIsLoader(true);
-                const response = await createProduct({ price, name });
-                if (response.status === 201) {
-                  alert("Succesfully created");
-                  setIsModal(false);
-                } else {
-                  alert("error");
-                }
-                setIsLoader(false);
-              }
-            }}
-          >
-            Create product
-          </button>
-        ) : (
+        {data?.edit === true ? (
           <button
             className="bg-primary-light text-white p-2 rounded-lg"
             onClick={async () => {
@@ -86,6 +65,27 @@ const ModalContent = ({ data }) => {
             }}
           >
             Edit product
+          </button>
+        ) : (
+          <button
+            className="bg-primary-light text-white p-2 rounded-lg"
+            onClick={async () => {
+              if (!name || !price) {
+                alert("Тайлбар болон үнэ заавал оруулна уу!!!");
+              } else {
+                setIsLoader(true);
+                const response = await createProduct({ price, name });
+                if (response.status === 201) {
+                  alert("Succesfully created");
+                  setIsModal(false);
+                } else {
+                  alert("error");
+                }
+                setIsLoader(false);
+              }
+            }}
+          >
+            Create product
           </button>
         )}
       </div>

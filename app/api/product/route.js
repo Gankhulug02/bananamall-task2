@@ -50,7 +50,7 @@ export async function DELETE(request) {
     // Delete product by Id
     await prisma.products.delete({
       where: {
-        id: productId, // Assuming productId is an integer
+        id: productId,
       },
     });
 

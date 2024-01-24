@@ -1,12 +1,20 @@
-import React from "react";
-import SearchSection from "../components/order/searchSection";
+"use client";
+import React, { useContext } from "react";
 import Table from "../components/order/table";
+import { ModalContext } from "../context/modelContext";
+import Modal from "../components/modal";
+import Loader from "../components/loader";
+import OrderTopSection from "../components/order/orderTopSection";
 
 const Order = () => {
+  const { isModal, isLoader, setIsLoader } = useContext(ModalContext);
+
   return (
     <div className="flex flex-col items-center gap-2 min-w-[1100px] min-h-screen  p-8">
-      <SearchSection />
+      <OrderTopSection />
       <Table />
+      {isModal === true ? <Modal /> : <></>}
+      {isLoader === true ? <Loader /> : <></>}
     </div>
   );
 };

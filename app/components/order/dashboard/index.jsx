@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -10,6 +10,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import { OrderContext } from "@/app/context/orderContext";
 
 ChartJS.register(
   CategoryScale,
@@ -21,12 +22,15 @@ ChartJS.register(
 );
 
 const Dashboard = () => {
+  const { orderes } = useContext(OrderContext);
+  const [priceValue, setPriceValue] = useState([200, 300, 400]);
+  const [labels, setLabels] = useState(["Feb", "Jan", "Jsad"]);
   const [chartData, setChartData] = useState({
-    labels: ["Jan", "Feb"],
+    labels: labels,
     datasets: [
       {
         label: "Total $",
-        data: [300, 200],
+        data: priceValue,
         borderColor: "rgb(53, 162, 235)",
         backgroundColor: "rgb(53, 162, 235, 0.4)",
       },

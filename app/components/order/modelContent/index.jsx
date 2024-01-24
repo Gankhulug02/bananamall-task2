@@ -39,6 +39,7 @@ const OrderModelContent = ({ data }) => {
         <input
           className="border-2 rounded-md p-2 w-[150px]"
           name="total"
+          type="number"
           value={inputData?.total}
           onChange={(e) => {
             inputHandler({ name: e.target.name, value: e.target.value });

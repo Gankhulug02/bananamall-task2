@@ -19,10 +19,6 @@ const OrderModelContent = ({ data }) => {
     setInputData({ ...inputData, [name]: value });
   };
 
-  useEffect(() => {
-    console.log(inputData);
-  }, [inputData]);
-
   return (
     <div className="flex flex-col gap-4 p-8 pt-16 w-[300px]">
       <div className="flex justify-between">

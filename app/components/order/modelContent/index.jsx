@@ -8,6 +8,7 @@ const OrderModelContent = ({ data }) => {
   const { createOrder } = useContext(OrderContext);
   const { products } = useContext(ProductContext);
   const { setIsModal, setIsLoader } = useContext(ModalContext);
+  const { chosenProduct, setChosenProduct } = useState({});
   const [inputData, setInputData] = useState(
     data?.edit === true
       ? { ...data }
@@ -29,6 +30,8 @@ const OrderModelContent = ({ data }) => {
         <input
           className="border-2 rounded-md p-2 w-[150px]"
           name="amount"
+          disabled
+          readOnly
           value={inputData?.amount}
           onChange={(e) => {
             inputHandler({ name: e.target.name, value: e.target.value });
@@ -67,18 +70,23 @@ const OrderModelContent = ({ data }) => {
           name="product_id"
           value={inputData?.product_id}
           onChange={(e) => {
-            inputHandler({ name: e.target.name, value: e.target.value });
+            const data = JSON.parse(e.target.value);
+            setInputData({
+              ...inputData,
+              amount: data.Price,
+              product_id: data.product_id,
+            });
           }}
         >
-          <option value="">ChooseProduct</option>
-          {products.map((product) => {
-            return (
-              <option value={product.id} key={product.id}>
-                {product.name}
-              </option>
-            );
-          })}
-          x
+          <option value="">Choose Product</option>
+          {products.map((product) => (
+            <option
+              value={`{ "Price": ${product.Price}, "product_id": "${product.id}" }`}
+              key={product.id}
+            >
+              {product.name}
+            </option>
+          ))}
         </select>
       </div>
       <button

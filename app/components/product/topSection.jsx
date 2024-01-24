@@ -6,7 +6,7 @@ import { ProductContext } from "@/app/context/productContext";
 
 const TopSection = () => {
   const { setIsModal, setContent } = useContext(ModalContext);
-  const { getProducts } = useContext(ProductContext);
+  const { getProducts, setProducts } = useContext(ProductContext);
   const [searchProd, setSearchProd] = useState("");
 
   const createProductFunction = async () => {
@@ -14,12 +14,19 @@ const TopSection = () => {
     setContent(<ModalContent />);
   };
 
-  useEffect(async () => {
-    console.log(searchProd);
-    if (searchProd) {
-      const products = await getProducts({ name: searchProd });
-    }
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const products = await getProducts({ name: searchProd });
+        setProducts(products);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+
+    fetchProducts();
   }, [searchProd]);
+
   return (
     <div className="flex justify-between w-full ">
       <input

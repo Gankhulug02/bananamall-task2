@@ -5,10 +5,11 @@ import Modal from "../components/modal";
 import { ModalContext } from "../context/modelContext";
 import TopSection from "../components/product/topSection";
 import { BASE_URL } from "@/variables";
+import { ProductContext } from "../context/productContext";
 
 const Product = () => {
   const { isModal } = useContext(ModalContext);
-  const [products, setProducts] = useState([]);
+  const { setProducts, products } = useContext(ProductContext);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -29,7 +30,6 @@ const Product = () => {
       <TopSection />
       <div className="flex flex-wrap justify-center gap-6">
         {products.map((e, index) => {
-          console.log(e);
           return (
             <div key={index}>
               <OneProduct
